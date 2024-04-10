@@ -71,3 +71,22 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         password=password,
         database=name
         )
+
+
+def main() -> None:
+    """main function program"""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+    headers = [field[0] for field in cursor.description]
+    logger = get_logger()
+
+    for row in cursor:
+        info_answer = ''
+        for f, p in zip(row, headers):
+            info_answer += f'{p}={(f)}; '
+        logger.info(info_answer)
+
+    cursor.close()
+    db.close()

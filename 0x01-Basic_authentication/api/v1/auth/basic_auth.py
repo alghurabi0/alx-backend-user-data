@@ -4,6 +4,7 @@ from werkzeug.datastructures import Authorization
 from api.v1.auth.auth import Auth
 from base64 import b64decode
 import base64
+from typing import Tuple
 
 
 class BasicAuth(Auth):
@@ -33,7 +34,7 @@ class BasicAuth(Auth):
         except (base64.binascii.Error, UnicodeDecodeError):
             return None
 
-    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):  # noqa
+    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> Tuple[str, str]:  # noqa
         """extract user whatever"""
         if decoded_base64_authorization_header is None:
             return None
@@ -43,4 +44,4 @@ class BasicAuth(Auth):
         if char not in decoded_base64_authorization_header:
             return None
         cred = decoded_base64_authorization_header.split(char)
-        return (cred[0], cred[1])
+        return cred[0], cred[1]

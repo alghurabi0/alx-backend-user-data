@@ -4,7 +4,8 @@ from werkzeug.datastructures import Authorization
 from api.v1.auth.auth import Auth
 from base64 import b64decode
 import base64
-from typing import Tuple
+from typing import Tuple, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -45,3 +46,20 @@ class BasicAuth(Auth):
             return None, None
         cred = decoded_base64_authorization_header.split(char)
         return cred[0], cred[1]
+
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """user object from cred.
+        """
+        if type(user_email) == str and type(user_pwd) == str:
+            try:
+                users = User.search({'email': user_email})
+            except Exception:
+                return None
+            if len(users) <= 0:
+                return None
+            if users[0].is_valid_password(user_pwd):
+                return users[0]
+        return None

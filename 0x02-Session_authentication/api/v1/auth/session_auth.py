@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+"""session auth implementation"""
+from api.v1.auth import Auth
+
+
+class SessionAuth(Auth):
+    pass

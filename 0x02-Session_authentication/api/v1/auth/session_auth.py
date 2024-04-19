@@ -6,7 +6,7 @@ from uuid import uuid4
 
 class SessionAuth(Auth):
     """sesssion auth class"""
-    session_id_by_user_id = {}
+    user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
         """create session function"""
@@ -15,5 +15,5 @@ class SessionAuth(Auth):
         if not isinstance(user_id, str):
             return None
         session_id = uuid4()
-        self.session_id_by_user_id[str(session_id)] = user_id
+        self.user_id_by_session_id[str(session_id)] = user_id
         return str(session_id)
